@@ -1,0 +1,165 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+tic-tac-toe.exe -- emu8086 assembler version: 4.08  
+ 
+[ 05.01.2025  --  12:02:57 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       DATA SEGMENT USE16
+[   2]        :                                       ;Board Lines
+[   3]    0000: 20 20 20 7C 20 20 20 7C 20 20 20 24   L1 DB '   |   |   ', '$'
+                                                    
+[   4]    000C: 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 24   L2 DB '-----------', '$'
+                                                    
+[   5]    0018: 0D 0A 24                              NEWLINE DB 13, 10, '$'
+[   6]        :                                       
+[   7]        :                                       ;Cell Numbers
+[   8]    001B: 31 24                                 C1 DB '1', '$'
+[   9]    001D: 32 24                                 C2 DB '2', '$'
+[  10]    001F: 33 24                                 C3 DB '3', '$'
+[  11]    0021: 34 24                                 C4 DB '4', '$'
+[  12]    0023: 35 24                                 C5 DB '5', '$'
+[  13]    0025: 36 24                                 C6 DB '6', '$'
+[  14]    0027: 37 24                                 C7 DB '7', '$'
+[  15]    0029: 38 24                                 C8 DB '8', '$'
+[  16]    002B: 39 24                                 C9 DB '9', '$'
+[  17]        :                                       DATA ENDS
+[  18]        :                                       
+[  19]        :                                       CODE SEGMENT USE16
+[  20]        :                                       ASSUME CS:CODE, DS:DATA
+[  21]        :                                       
+[  22]    0030:                                       BEG:
+[  23]    0030: B8 00 00                              MOV AX, DATA
+[  24]    0033: 8E D8                                 MOV DS, AX
+[  25]        :                                       
+[  26]        :                                       ;First Line
+[  27]    0035: BA 1B 00                              MOV DX, OFFSET C1
+[  28]    0038: E8 73 00                              CALL PRINT_CHAR
+[  29]    003B: BA 01 00                              MOV DX, OFFSET L1+1
+[  30]    003E: E8 72 00                              CALL PRINT_STR
+[  31]        :                                       
+[  32]    0041: BA 1D 00                              MOV DX, OFFSET C2
+[  33]    0044: E8 67 00                              CALL PRINT_CHAR
+[  34]    0047: BA 05 00                              MOV DX, OFFSET L1+5
+[  35]    004A: E8 66 00                              CALL PRINT_STR
+[  36]        :                                       
+[  37]    004D: BA 1F 00                              MOV DX, OFFSET C3
+[  38]    0050: E8 5B 00                              CALL PRINT_CHAR
+[  39]    0053: E8 62 00                              CALL PRINT_NEWLINE
+[  40]        :                                       
+[  41]        :                                       ;First Seperator
+[  42]    0056: BA 0C 00                              MOV DX, OFFSET L2
+[  43]    0059: E8 57 00                              CALL PRINT_STR
+[  44]    005C: E8 59 00                              CALL PRINT_NEWLINE
+[  45]        :                                       
+[  46]        :                                       ;Second Line
+[  47]    005F: BA 21 00                              MOV DX, OFFSET C4
+[  48]    0062: E8 49 00                              CALL PRINT_CHAR
+[  49]    0065: BA 01 00                              MOV DX, OFFSET L1+1
+[  50]    0068: E8 48 00                              CALL PRINT_STR
+[  51]        :                                       
+[  52]    006B: BA 23 00                              MOV DX, OFFSET C5
+[  53]    006E: E8 3D 00                              CALL PRINT_CHAR
+[  54]    0071: BA 05 00                              MOV DX, OFFSET L1+5
+[  55]    0074: E8 3C 00                              CALL PRINT_STR
+[  56]        :                                       
+[  57]    0077: BA 25 00                              MOV DX, OFFSET C6
+[  58]    007A: E8 31 00                              CALL PRINT_CHAR
+[  59]    007D: E8 38 00                              CALL PRINT_NEWLINE
+[  60]        :                                       
+[  61]        :                                       ;Second Seperator
+[  62]    0080: BA 0C 00                              MOV DX, OFFSET L2
+[  63]    0083: E8 2D 00                              CALL PRINT_STR
+[  64]    0086: E8 2F 00                              CALL PRINT_NEWLINE
+[  65]        :                                       
+[  66]        :                                       ;Third Line
+[  67]    0089: BA 27 00                              MOV DX, OFFSET C7
+[  68]    008C: E8 1F 00                              CALL PRINT_CHAR
+[  69]    008F: BA 01 00                              MOV DX, OFFSET L1+1
+[  70]    0092: E8 1E 00                              CALL PRINT_STR
+[  71]        :                                       
+[  72]    0095: BA 29 00                              MOV DX, OFFSET C8
+[  73]    0098: E8 13 00                              CALL PRINT_CHAR
+[  74]    009B: BA 05 00                              MOV DX, OFFSET L1+5
+[  75]    009E: E8 12 00                              CALL PRINT_STR
+[  76]        :                                       
+[  77]    00A1: BA 2B 00                              MOV DX, OFFSET C9
+[  78]    00A4: E8 07 00                              CALL PRINT_CHAR
+[  79]    00A7: E8 0E 00                              CALL PRINT_NEWLINE
+[  80]        :                                       
+[  81]        :                                       ;Halt Program
+[  82]    00AA: B4 4C                                 MOV AH, 4CH
+[  83]    00AC: CD 21                                 INT 21H
+[  84]        :                                       
+[  85]        :                                       ;Print Methods
+[  86]    00AE:                                       PRINT_CHAR PROC
+[  87]    00AE: B4 09                                 MOV AH, 9
+[  88]    00B0: CD 21                                 INT 21H
+[  89]    00B2: C3                                    RET
+[  90]        :                                       PRINT_CHAR ENDP
+[  91]        :                                       
+[  92]    00B3:                                       PRINT_STR PROC
+[  93]    00B3: B4 09                                 MOV AH, 9
+[  94]    00B5: CD 21                                 INT 21H
+[  95]    00B7: C3                                    RET
+[  96]        :                                       PRINT_STR ENDP
+[  97]        :                                       
+[  98]    00B8:                                       PRINT_NEWLINE PROC
+[  99]    00B8: B4 09                                 MOV AH, 9
+[ 100]    00BA: BA 18 00                              MOV DX, OFFSET NEWLINE
+[ 101]    00BD: CD 21                                 INT 21H
+[ 102]    00BF: C3                                    RET
+[ 103]        :                                       PRINT_NEWLINE ENDP
+[ 104]        :                                       
+[ 105]        :                                       CODE ENDS
+[ 106]        :                                       
+[ 107]        :                                       END BEG
+[ 108]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: C0      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 02      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 00      -   SP - stack pointer (h.byte)
+0012: 04      -   check sum (l.byte)
+0013: 46      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 03      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 03      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

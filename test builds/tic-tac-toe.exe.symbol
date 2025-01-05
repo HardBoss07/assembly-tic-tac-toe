@@ -1,0 +1,26 @@
+< THE SYMBOL TABLE >  tic-tac-toe.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+DATA                     	00000     	-5        	SEGMENT   	(ITSELF)  
+L1                       	00000     	1         	VAR       	DATA      
+L2                       	0000C     	1         	VAR       	DATA      
+NEWLINE                  	00018     	1         	VAR       	DATA      
+C1                       	0001B     	1         	VAR       	DATA      
+C2                       	0001D     	1         	VAR       	DATA      
+C3                       	0001F     	1         	VAR       	DATA      
+C4                       	00021     	1         	VAR       	DATA      
+C5                       	00023     	1         	VAR       	DATA      
+C6                       	00025     	1         	VAR       	DATA      
+C7                       	00027     	1         	VAR       	DATA      
+C8                       	00029     	1         	VAR       	DATA      
+C9                       	0002B     	1         	VAR       	DATA      
+CODE                     	00003     	-5        	SEGMENT   	(ITSELF)  
+BEG                      	00000     	-1        	LABEL     	CODE      
+PRINT_CHAR               	0007E     	-1        	NEAR      	CODE      
+PRINT_STR                	00083     	-1        	NEAR      	CODE      
+PRINT_NEWLINE            	00088     	-1        	NEAR      	CODE      
+===================================================================================================
+[ 05.01.2025  --  12:02:57 ] 
+< END >
+ 
