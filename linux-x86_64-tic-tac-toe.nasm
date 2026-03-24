@@ -59,10 +59,20 @@ TRA DB 'Want to play again? (y/n): ', 0
 WI  DB 32, 32, 32, 'Wrong input! any key input...   ', 10, 0
 EMP DB '                                         ', 10, 0
 
+; CURSOR BUFFER
+cursor_buf DB 27, '[00;00H', 0
+
+; ESC [ 2 J  (Clears the entire screen)
+; ESC [ H    (Moves cursor to top-left / Home)
+clear_seq db 27, '[2J', 27, '[H', 0
+
 section .text
     global _start
 
 _start:
+    ; Clearing Screen before starting program
+    call ClearScreen
+    
     ; Title Screen
 
     ; Set Cursor to Row 6, Col 14
@@ -114,6 +124,13 @@ _start:
     mov rdi, TN         ; Loading Border Title Screen Line
     call PrintString
 
+    ; Set Cursor to Row 14, Col 14
+    mov rdi, 14         ; Row
+    mov rsi, 24         ; Col
+    call SetCursor
+    mov rdi, TAGLINE    ; Loading Tagline
+    call PrintString
+
     ; Exit Program properly
     mov rax, 60         ; sys_exit
     xor rdi, rdi
@@ -122,11 +139,38 @@ _start:
 ; SetCursor: Moves cursor using ANSI escape sequences
 ; Input: rdi = Row, rsi = Col
 SetCursor:
-    section .data
-        pos_fmt db 27, '[%2d;%2dH]', 0      ; ANSI: ESC[row;colH
-    
-    section .text
-        ret
+    push rax
+    push rdx
+    push rdi
+    push rsi
+
+    ; Convert Row (RDI) to ASCII '00'
+    mov rax, rdi
+    mov dl, 10
+    div dl              ; AL = tens, AH = units
+    add al, '0'
+    add ah, '0'
+    mov [cursor_buf + 2], al
+    mov [cursor_buf + 3], ah
+
+    ; Convert Col (RSI) to ASCII '00'
+    mov rax, rsi
+    mov dl, 10
+    div dl              ; AL = tens, AH = units
+    add al, '0'
+    add ah, '0'
+    mov [cursor_buf + 5], al
+    mov [cursor_buf + 6], ah
+
+    ; Print the finished buffer
+    mov rdi, cursor_buf
+    call PrintString
+
+    pop rsi
+    pop rdi
+    pop rdx
+    pop rax
+    ret
 
 ; PrintString: Prints a null-terminated string
 ; Input: rdi = adress of string
@@ -156,4 +200,12 @@ PrintString:
     pop rcx
     pop rbx
     pop rax
+    ret
+
+; ClearScreen: Clears entire screen and resets cursor to top left
+ClearScreen:
+    push rdi
+    mov rdi, clear_seq
+    call PrintString
+    pop rdi
     ret
