@@ -1,0 +1,159 @@
+section .data
+
+; LOGO LINES
+; 0xE2, 0x96, 0x88 is the block character, 32 is space. 
+; Added 10 (newline) at the end of each line for easier printing.
+TN DB "###############################################################", 10, 0
+T1 DB "#  █████ █████  ███    █████   █    ███    █████  ███  █████  #", 10, 0
+T2 DB "#    █     █   █   █     █    █ █  █   █     █   █   █ █      #", 10, 0
+T3 DB "#    █     █   █         █    █ █  █         █   █   █ ████   #", 10, 0
+T4 DB "#    █     █   █   █     █   █████ █   █     █   █   █ █      #", 10, 0
+T5 DB "#    █   █████  ███      █   █   █  ███      █    ███  █████  #", 10, 0
+
+; STRINGS
+TAGLINE DB 'Developed by Matteo "HardBoss07" Bosshard', 10, 0
+PAK     DB 'any key input to continue...', 10, 0
+
+; RULES
+R  DB 'Game Rules:', 10, 0
+R1 DB '1. Players will take turns.', 10, 0
+R2 DB '2. Player 1 will start the game.', 10, 0
+R3 DB '3. Player 1 will set "X" and Player 2 will set "O".', 10, 0
+R4 DB '4. The board is marked with cell numbers.', 10, 0
+R5 DB '5. Enter cell NUMBER to place your mark.', 10, 0
+R6 DB '6. Set 3 of your marks horizontally, vertically or diagonally to win.', 10, 0
+R7 DB 'Good Luck!', 10, 0
+
+; GAME BOARD COMPONENTS
+PC1 DB ' (X)', 0
+PC2 DB ' (O)', 0
+L1  DB '   |   |   ', 10, 0
+L2  DB '-----------', 10, 0
+N1  DB ' | ', 0
+
+; CELL STATE (Initially numbers 1-9)
+C1 DB '1', 0
+C2 DB '2', 0
+C3 DB '3', 0
+C4 DB '4', 0
+C5 DB '5', 0
+C6 DB '6', 0
+C7 DB '7', 0
+C8 DB '8', 0
+C9 DB '9', 0
+
+; GAME VARIABLES
+PLAYER DB '2'        ; Character '2' (ASCII 50)
+MOVES  DB 0
+DONE   DB 0
+DR     DB 0
+CUR    DB 88         ; 'X'
+
+; UI STRINGS
+INP DB 32, ':: Enter cell no. : ', 0
+TKN DB 'This cell is taken! any key input...', 10, 0
+W1  DB 'Player ', 0
+W2  DB ' won the game!', 10, 0
+DRW DB 'The game is draw!', 10, 0
+TRA DB 'Want to play again? (y/n): ', 0
+WI  DB 32, 32, 32, 'Wrong input! any key input...   ', 10, 0
+EMP DB '                                         ', 10, 0
+
+section .text
+    global _start
+
+_start:
+    ; Title Screen
+
+    ; Set Cursor to Row 6, Col 14
+    mov rdi, 6          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, TN         ; Loading Border Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 7, Col 14
+    mov rdi, 7          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T1         ; Loading 1. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 8, Col 14
+    mov rdi, 8          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T2         ; Loading 2. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 9, Col 14
+    mov rdi, 9          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T3         ; Loading 3. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 10, Col 14
+    mov rdi, 10         ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T4         ; Loading 4. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 11, Col 14
+    mov rdi, 11         ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T5         ; Loading 5. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 12, Col 14
+    mov rdi, 12         ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, TN         ; Loading Border Title Screen Line
+    call PrintString
+
+    ; Exit Program properly
+    mov rax, 60         ; sys_exit
+    xor rdi, rdi
+    syscall
+
+; SetCursor: Moves cursor using ANSI escape sequences
+; Input: rdi = Row, rsi = Col
+SetCursor:
+    section .data
+        pos_fmt db 27, '[%2d;%2dH]', 0      ; ANSI: ESC[row;colH
+    
+    section .text
+        ret
+
+; PrintString: Prints a null-terminated string
+; Input: rdi = adress of string
+PrintString:
+    push rax
+    push rbx
+    push rcx
+    push rdx
+    
+    mov rbx, rdi                            ; Put adress in rbx
+
+    ; Find string length
+    xor rdx, rdx
+.loop_len:
+    cmp byte [rbx + rdx], 0
+    je .do_print
+    inc rdx
+    jmp .loop_len
+
+.do_print:
+    mov rax, 1                              ; sys_write
+    mov rsi, rbx                            ; buffer adress
+    mov rdi, 1                              ; stdout
+    syscall                                 ; rdx already has the length
+
+    pop rdx
+    pop rcx
+    pop rbx
+    pop rax
+    ret
