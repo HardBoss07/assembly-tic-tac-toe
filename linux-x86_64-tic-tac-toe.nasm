@@ -74,62 +74,7 @@ _start:
     call ClearScreen
     
     ; Title Screen
-
-    ; Set Cursor to Row 6, Col 14
-    mov rdi, 6          ; Row
-    mov rsi, 14         ; Col
-    call SetCursor
-    mov rdi, TN         ; Loading Border Title Screen Line
-    call PrintString
-
-    ; Set Cursor to Row 7, Col 14
-    mov rdi, 7          ; Row
-    mov rsi, 14         ; Col
-    call SetCursor
-    mov rdi, T1         ; Loading 1. Title Screen Line
-    call PrintString
-
-    ; Set Cursor to Row 8, Col 14
-    mov rdi, 8          ; Row
-    mov rsi, 14         ; Col
-    call SetCursor
-    mov rdi, T2         ; Loading 2. Title Screen Line
-    call PrintString
-
-    ; Set Cursor to Row 9, Col 14
-    mov rdi, 9          ; Row
-    mov rsi, 14         ; Col
-    call SetCursor
-    mov rdi, T3         ; Loading 3. Title Screen Line
-    call PrintString
-
-    ; Set Cursor to Row 10, Col 14
-    mov rdi, 10         ; Row
-    mov rsi, 14         ; Col
-    call SetCursor
-    mov rdi, T4         ; Loading 4. Title Screen Line
-    call PrintString
-
-    ; Set Cursor to Row 11, Col 14
-    mov rdi, 11         ; Row
-    mov rsi, 14         ; Col
-    call SetCursor
-    mov rdi, T5         ; Loading 5. Title Screen Line
-    call PrintString
-
-    ; Set Cursor to Row 12, Col 14
-    mov rdi, 12         ; Row
-    mov rsi, 14         ; Col
-    call SetCursor
-    mov rdi, TN         ; Loading Border Title Screen Line
-    call PrintString
-
-    ; Set Cursor to Row 14, Col 14
-    mov rdi, 14         ; Row
-    mov rsi, 24         ; Col
-    call SetCursor
-    mov rdi, TAGLINE    ; Loading Tagline
-    call PrintString
+    call TitleScreen
 
     ; Exit Program properly
     mov rax, 60         ; sys_exit
@@ -207,5 +152,71 @@ ClearScreen:
     push rdi
     mov rdi, clear_seq
     call PrintString
+    pop rdi
+    ret
+
+; TitleScreen: Prints out the title screen
+TitleScreen:
+    push rdi
+    push rsi
+
+    ; Set Cursor to Row 6, Col 14
+    mov rdi, 6          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, TN         ; Loading Border Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 7, Col 14
+    mov rdi, 7          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T1         ; Loading 1. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 8, Col 14
+    mov rdi, 8          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T2         ; Loading 2. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 9, Col 14
+    mov rdi, 9          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T3         ; Loading 3. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 10, Col 14
+    mov rdi, 10         ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T4         ; Loading 4. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 11, Col 14
+    mov rdi, 11         ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, T5         ; Loading 5. Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 12, Col 14
+    mov rdi, 12         ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, TN         ; Loading Border Title Screen Line
+    call PrintString
+
+    ; Set Cursor to Row 14, Col 14
+    mov rdi, 14         ; Row
+    mov rsi, 24         ; Col
+    call SetCursor
+    mov rdi, TAGLINE    ; Loading Tagline
+    call PrintString
+
+    ; Exit function
+    pop rsi
     pop rdi
     ret
