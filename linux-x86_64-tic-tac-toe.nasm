@@ -84,6 +84,12 @@ _start:
     ; Await Press Any Key
     call PressAnyKey
 
+    ; Clearing Screen before printing rules
+    call ClearScreen
+
+    ; Print Rules
+    call PrintRules
+
     ; Exit Program properly
     mov rax, 60         ; sys_exit
     xor rdi, rdi
@@ -217,7 +223,7 @@ TitleScreen:
     mov rdi, TN         ; Loading Border Title Screen Line
     call PrintString
 
-    ; Set Cursor to Row 14, Col 14
+    ; Set Cursor to Row 14, Col 24
     mov rdi, 14         ; Row
     mov rsi, 24         ; Col
     call SetCursor
@@ -288,4 +294,76 @@ PressAnyKey:
     pop rsi
     pop rdi
     pop rax
+    ret
+
+; PrintRules: Prints the list of rules
+PrintRules:
+    push rdi
+    push rsi
+
+    ; Set Cursor to Row 6, Col 14
+    mov rdi, 6          ; Row
+    mov rsi, 14         ; Col
+    call SetCursor
+    mov rdi, R          ; Loading 0. Rule line          
+    call PrintString
+
+    ; Set Cursor to Row 8, Col 4
+    mov rdi, 8          ; Row
+    mov rsi, 4          ; Col
+    call SetCursor
+    mov rdi, R1         ; Loading 1. Rule line
+    call PrintString
+
+    ; Set Cursor to Row 8, Col 4
+    mov rdi, 8          ; Row
+    mov rsi, 4          ; Col
+    call SetCursor
+    mov rdi, R1         ; Loading 1. Rule line
+    call PrintString
+
+    ; Set Cursor to Row 9, Col 4
+    mov rdi, 9          ; Row
+    mov rsi, 4          ; Col
+    call SetCursor
+    mov rdi, R2         ; Loading 2. Rule line
+    call PrintString
+
+    ; Set Cursor to Row 10, Col 4
+    mov rdi, 10         ; Row
+    mov rsi, 4          ; Col
+    call SetCursor
+    mov rdi, R3         ; Loading 3. Rule line
+    call PrintString
+
+    ; Set Cursor to Row 11, Col 4
+    mov rdi, 11         ; Row
+    mov rsi, 4          ; Col
+    call SetCursor
+    mov rdi, R4         ; Loading 4. Rule line
+    call PrintString
+
+    ; Set Cursor to Row 12, Col 4
+    mov rdi, 12         ; Row
+    mov rsi, 4          ; Col
+    call SetCursor
+    mov rdi, R5         ; Loading 5. Rule line
+    call PrintString
+
+    ; Set Cursor to Row 13, Col 4
+    mov rdi, 13         ; Row
+    mov rsi, 4          ; Col
+    call SetCursor
+    mov rdi, R6         ; Loading 6. Rule line
+    call PrintString
+
+    ; Set Cursor to Row 15, Col 14
+    mov rdi, 15          ; Row
+    mov rsi, 14          ; Col
+    call SetCursor
+    mov rdi, R7          ; Loading 7. Rule line          
+    call PrintString
+
+    pop rsi
+    pop rdi
     ret
