@@ -47,7 +47,7 @@ PLAYER DB '2'        ; Character '2' (ASCII 50)
 MOVES  DB 0
 DONE   DB 0
 DR     DB 0
-CUR    DB 88         ; 'X'
+CUR    DB 'X'
 
 ; UI STRINGS
 INP DB 32, ':: Enter cell no. : ', 0
@@ -89,6 +89,12 @@ _start:
 
     ; Print Rules
     call PrintRules
+
+    ; Await Press Any Key
+    call PressAnyKey
+
+    ; Init Game
+    call Init
 
     ; Exit Program properly
     mov rax, 60         ; sys_exit
@@ -366,4 +372,43 @@ PrintRules:
 
     pop rsi
     pop rdi
+    ret
+
+; Init: Initializes all game variables
+Init:
+    ; Initialize game state variables
+    mov byte [PLAYER], '2'
+    mov byte [MOVES], 0
+    mov byte [DONE], 0
+    mov byte [DR], 0
+
+    ; Reset Board Cells
+    mov byte [C1], '1'
+    mov byte [C2], '2'
+    mov byte [C3], '3'
+    mov byte [C4], '4'
+    mov byte [C5], '5'
+    mov byte [C6], '6'
+    mov byte [C7], '7'
+    mov byte [C8], '8'
+    mov byte [C9], '9'
+
+    jmp PlayerChange
+
+; PlayerChange: handles player change
+PlayerChange:
+    cmp byte [PLAYER], '1'
+    je SetP2
+
+SetP1:
+    mov byte [PLAYER], '1'
+    mov byte [CUR], 'X'
+    jmp done_change
+
+SetP2:
+    mov byte [PLAYER], '2'
+    mov byte [CUR], 'O'
+
+done_change:
+    call PrintBoard
     ret
