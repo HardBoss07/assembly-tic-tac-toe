@@ -412,3 +412,120 @@ SetP2:
 done_change:
     call PrintBoard
     ret
+
+; PrintBoard: Prints current state of board
+PrintBoard:
+    push rdi
+    push rsi
+
+    call ClearScreen
+
+    ; TOP ROW (Cells 1, 2, 3)
+    mov rdi, 6          ; Row 6: Empty bars
+    mov rsi, 30
+    call SetCursor
+    mov rdi, L1
+    call PrintString
+
+    mov rdi, 7          ; Row 7: The Numbers
+    mov rsi, 31
+    call SetCursor
+    mov rdi, C1
+    call PrintString
+    mov rdi, N1
+    call PrintString
+    mov rdi, C2
+    call PrintString
+    mov rdi, N1
+    call PrintString
+    mov rdi, C3
+    call PrintString
+
+    mov rdi, 8          ; Row 8: Empty bars
+    mov rsi, 30
+    call SetCursor
+    mov rdi, L1
+    call PrintString
+
+    mov rdi, 9          ; Row 9: Horizontal Divider
+    mov rsi, 30
+    call SetCursor
+    mov rdi, L2
+    call PrintString
+
+    ; MIDDLE ROW (Cells 4, 5, 6)
+    mov rdi, 10         ; Row 10: Empty bars
+    mov rsi, 30
+    call SetCursor
+    mov rdi, L1
+    call PrintString
+
+    mov rdi, 11         ; Row 11: The Numbers
+    mov rsi, 31
+    call SetCursor
+    mov rdi, C4
+    call PrintString
+    mov rdi, N1
+    call PrintString
+    mov rdi, C5
+    call PrintString
+    mov rdi, N1
+    call PrintString
+    mov rdi, C6
+    call PrintString
+
+    mov rdi, 12         ; Row 12: Empty bars
+    mov rsi, 30
+    call SetCursor
+    mov rdi, L1
+    call PrintString
+
+    mov rdi, 13         ; Row 13: Horizontal Divider
+    mov rsi, 30
+    call SetCursor
+    mov rdi, L2
+    call PrintString
+
+    ; BOTTOM ROW (Cells 7, 8, 9)
+    mov rdi, 14         ; Row 14: Empty bars
+    mov rsi, 30
+    call SetCursor
+    mov rdi, L1
+    call PrintString
+
+    mov rdi, 15         ; Row 15: The Numbers
+    mov rsi, 31
+    call SetCursor
+    mov rdi, C7
+    call PrintString
+    mov rdi, N1
+    call PrintString
+    mov rdi, C8
+    call PrintString
+    mov rdi, N1
+    call PrintString
+    mov rdi, C9
+    call PrintString
+
+    mov rdi, 16         ; Row 16: Empty bars
+    mov rsi, 30
+    call SetCursor
+    mov rdi, L1
+    call PrintString
+
+    ; Check status
+    cmp byte [DONE], 1
+    je Victory
+    cmp byte [DR], 1
+    je Draw
+
+    pop rsi
+    pop rdi
+    ret
+
+Victory:
+    ; Implementation for victory message...
+    ret
+Draw:
+    ; Implementation for draw message...
+    ret
