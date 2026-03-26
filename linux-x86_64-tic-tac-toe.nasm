@@ -12,7 +12,7 @@ T5 DB "#    █   █████  ███      █   █   █  ███    
 
 ; STRINGS
 TAGLINE DB 'Developed by Matteo "HardBoss07" Bosshard', 10, 0
-PAK     DB 'any key input to continue...', 10, 0
+PAK DB 10, 27, '[4C', 'Press any key input to continue...', 10, 0
 
 ; RULES
 R  DB 'Game Rules:', 10, 0
