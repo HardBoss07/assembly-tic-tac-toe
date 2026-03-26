@@ -66,6 +66,11 @@ cursor_buf DB 27, '[00;00H', 0
 ; ESC [ H    (Moves cursor to top-left / Home)
 clear_seq db 27, '[2J', 27, '[H', 0
 
+; Saving state of Terminal
+section .bss
+    termios_orig resb 60    ; Buffer to store original terminal settings
+    termios_raw  resb 60    ; Buffer for modified "raw" settings
+
 section .text
     global _start
 
@@ -75,6 +80,9 @@ _start:
     
     ; Title Screen
     call TitleScreen
+
+    ; Await Press Any Key
+    call PressAnyKey
 
     ; Exit Program properly
     mov rax, 60         ; sys_exit
@@ -219,4 +227,65 @@ TitleScreen:
     ; Exit function
     pop rsi
     pop rdi
+    ret
+
+; PressAnyKey: Prints PAK string and waits for a single keypress
+PressAnyKey:
+    push rax
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+
+    ; 1. Printing PAK string
+    mov rdi, PAK
+    call PrintString
+
+    ; 2. Get current terminal settings (TCGETS) into termios_orig
+    mov rax, 16             ; sys_ioctl
+    mov rdi, 0              ; stdin (fd 0)
+    mov rsi, 0x5401         ; TCGETS constant
+    mov rdx, termios_orig
+    syscall
+
+    ; 3. COPY termios_orig to termios_raw
+    ; This is the missing piece! We need a starting point for raw mode.
+    mov rsi, termios_orig
+    mov rdi, termios_raw
+    mov rcx, 60             ; termios struct size is 60 bytes
+    cld
+    rep movsb               ; Copy memory from rsi to rdi
+
+    ; 4. Modify termios_raw for "Raw" mode
+    ; Clear ICANON (bit 1) and ECHO (bit 3) in c_lflag (offset 12)
+    and dword [termios_raw + 12], ~(2 | 8)
+
+    ; 5. Set new terminal settings (TCSETS) using our modified raw buffer
+    mov rax, 16             ; sys_ioctl
+    mov rdi, 0              ; stdin
+    mov rsi, 0x5402         ; TCSETS constant
+    mov rdx, termios_raw
+    syscall
+
+    ; 6. Read 1 character from stdin
+    mov rax, 0              ; sys_read
+    mov rdi, 0              ; stdin
+    sub rsp, 1              ; Create 1 byte of space on stack
+    mov rsi, rsp            ; Read into stack space
+    mov rdx, 1              ; 1 byte
+    syscall
+    add rsp, 1              ; Clean up stack
+
+    ; 7. Restore original terminal settings
+    mov rax, 16             ; sys_ioctl
+    mov rdi, 0              ; stdin
+    mov rsi, 0x5402         ; TCSETS
+    mov rdx, termios_orig
+    syscall
+
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+    pop rax
     ret
